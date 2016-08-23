@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" dir="ltr">
+<!--
+Specifying the doctype DTD URL causes IE to render in standards mode.
+See http://msdn.microsoft.com/en-us/library/ms535242.aspx
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/aws-sdk.js"></script>
+    <script src="js/dynamodb-doc.min.js"></script>
+    <script src="/Users/traverso/Scripts/heatmap.js/build/heatmap.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery.pietimer.min.js"></script>
+    <!-- Chart.js -->
+    <script src="http://www.chartjs.org/assets/Chart.min.js"></script>
+    <!--
+    Use JavaScript ver 1.2 so older browsers ignore the script.
+    //-->
+    <!--<script src="/Users/traverso/.aws/credentials.js"></script> -->
+    <script language="JavaScript1.2"></script>
+    <title>Test heatmap.js</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body> 
+    <!--<div class="heatmap" style="width:1200px; height:600px">-->
+    <div class="heatmap" id="test">
+    </div>
+</body>
+
+<script>
+
+ // Get the window dimensions
+var wWidth  = $(window).width();
+var wHeight = $(window).height();
+$(".heatmap").width(wWidth)
+$(".heatmap").height(wHeight)
+
+AWS.config.region = 'us-east-1';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-east-1:61a27d9b-0a50-4937-ac51-80086b76926c',
+});
+
+// minimal heatmap instance configuration
+var heatmapInstance = h337.create({
+  // only container is required, the rest will be defaults
+  container: document.querySelector('.heatmap')
+});
+
+var dynamo = new DynamoDB();
+
+// Get last 20 datapoints to create Heatmap
+var d = new Date()
+curr_time = Math.round(d.getTime()/1000)
+console.log('Retrieving data from DynamoDB');
+var params = {};
+params.TableName = "Tracking"
+params.KeyConditionExpression = "username = :hasval AND #T <= :rangeval1"
+params.ExpressionAttributeValues = {
+    ':hasval' : username,
+    ':rangeval1' : Number(curr_time)
+}
+params.ExpressionAttributeNames = {
+      '#T': 'timestamp'      // timestamp and count are reserved words in DynamoDB
+}
+params.ScanIndexForward = false
+params.Limit = 10
+
+// Execute Query in DynamoDB
+dynamo.query(params, function (err, data) {
+    if (err) {
+        console.log(err, err.stack);      // an error occurred
+    }
+    else {                              // successful response
+        //console.log(data)
+        var counters = {}
+        var max = 0
+        // Let's agregate the data, count ocurrences for each position
+        for (i = 0; i < data.Items.length; i++) {
+            for (j = 0; j < data.Items[i].movs.length; j++) {
+                // use x:y as index of associative array
+                var id = (data.Items[i].movs[j].X + ':' + data.Items[i].movs[j].Y).toString()
+                if (!(id in counters)) {
+                    // initialize counter for this position
+                    counters[id] = 1
+                }
+                else {
+                    // increment counter for this position
+                    counters[id]++
+                }
+            }
+            max = Math.max(max, counters[id]);
+        }
+        
+        var points = [];
+        // Prepare data for Heatmap 
+        for (var key in counters) {
+            // get X and Y from the object ids 'x:y'
+            var cords = key.split(':')
+            var point = {
+                    x: cords[0],
+                    y: cords[1],
+                    value: counters[key]
+                }
+            points.push(point)
+        }
+        // heatmap data format
+        var data = { 
+          max: max, 
+          data: points 
+        };
+        console.log(data)
+        // if you have a set of datapoints always use setData instead of addData
+        // for data initialization
+        heatmapInstance.setData(data);
+        $(".heatmap-canvas").click(function() {
+            $(".heatmap-canvas").width(wWidth*0.5)
+            $(".heatmap-canvas").height(wHeight*0.5)
+        })
+    }
+});
+
+/*
+    // minimal heatmap instance configuration
+    var heatmapInstance = h337.create({
+      // only container is required, the rest will be defaults
+      container: document.querySelector('.heatmap')
+    });
+
+    // now generate some random data
+    var points = [];
+    var max = 0;
+    var width = 840;
+    var height = 400;
+    var len = 200;
+
+    while (len--) {
+      var val = Math.floor(Math.random()*100);
+      max = Math.max(max, val);
+      var point = {
+        x: Math.floor(Math.random()*width),
+        y: Math.floor(Math.random()*height),
+        value: val
+      };
+      points.push(point);
+    }
+  var points = []
+    points[0] = { x: 0, y: 0, value: 1}
+    points[1] = { x: 100, y: 100, value: 1}
+    points[2] = { x: 200, y: 200, value: 1}
+    points[3] = { x: 300, y: 300, value: 1}
+    points[4] = { x: 1000, y: 300, value: 1}
+    points[5] = { x: 1000, y: 300, value: 1}
+    // heatmap data format
+    var data = { 
+      max: 2, 
+      data: points 
+    };
+    // if you have a set of datapoints always use setData instead of addData
+    // for data initialization
+    heatmapInstance.setData(data);
+*/
+</script>
+</html>

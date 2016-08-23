@@ -1,0 +1,97 @@
+<html>
+    <script src="/Users/traverso/Scripts/heatmap.js/build/heatmap.min.js"></script>
+    <script src="/Users/traverso/Scripts/aws/kinesis/js/jquery.min.js"></script>
+     <div class="heatmap">
+     </div>
+</html>
+
+<script>
+ // Get the window dimensions
+var wWidth  = 600
+var wHeight = 300
+$(".heatmap").width(wWidth)
+$(".heatmap").height(wHeight)
+// minimal heatmap instance configuration
+var heatmapInstance = h337.create({
+  // only container is required, the rest will be defaults
+  container: document.querySelector('.heatmap')
+});
+
+// simulate Data
+data = {
+    Items: []
+}
+
+for (i = 0; i < 5; i++) {
+    data.Items[i] = { movs: []}
+    for (j = 0; j < 10; j++) {
+        var val = Math.round(Math.floor(Math.random()*10));
+        if (val == 5) {
+            // set with 0 in both
+            data.Items[i].movs[j] = { X:0, Y:0 }
+        }
+        else {
+            data.Items[i].movs[j] = { X: Math.floor(Math.random()*wWidth), Y: Math.floor(Math.random()*wHeight) }
+        }
+    }
+    console.log(JSON.stringify(data.Items[i].movs))
+}
+
+var counters = {}
+var max = 0
+// Let's agregate the data, count ocurrences for each position
+for (i = 0; i < data.Items.length; i++) {
+    for (j = 0; j < data.Items[i].movs.length; j++) {
+        var id = ""
+        // if position is X:0 and Y:0 means the mouse
+        // haven't moved since last recorded position
+        if (data.Items[i].movs[j].X === 0 && data.Items[i].movs[j].Y === 0) {
+            // If there is a previous position, we'll increment
+            // counter for the last recorded position
+            if (last_position_id) {
+                id = last_position_id
+            }
+        }
+        else {
+            // use x:y as index of associative array
+            var id = (data.Items[i].movs[j].X + ':' + data.Items[i].movs[j].Y).toString()
+            // this was the last recorded position
+            last_position_id = id
+        }
+        // if id is not defined, position is X:0 and Y:0
+        // but we do not have a previous position to increment
+        if (id) {
+            if (!(id in counters)) { // initialize counter for this position
+                counters[id] = 1
+            }
+            else {                  // increment counter for this position
+                console.log('Incrementing for: ', id)
+                counters[id]++
+            }
+            max = Math.max(max, counters[id]);
+        }
+    }
+}
+
+var points = [];
+// Prepare data for Heatmap 
+for (var key in counters) {
+    // get X and Y from the object ids 'x:y'
+    var cords = key.split(':')
+    var point = {
+            x: cords[0],
+            y: cords[1],
+            value: counters[key]
+        }
+    points.push(point)
+}
+// heatmap data format
+var data = { 
+  max: max, 
+  data: points 
+};
+console.log(JSON.stringify(data))
+// if you have a set of datapoints always use setData instead of addData
+// for data initialization
+heatmapInstance.setData(data);
+</script>

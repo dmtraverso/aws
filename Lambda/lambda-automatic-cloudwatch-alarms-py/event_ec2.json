@@ -1,0 +1,298 @@
+{
+    "version": "0",
+    "id": "ad8bfac2-aadd-41de-90e2-5c87806865b1",
+    "detail-type": "AWS API Call via CloudTrail",
+    "source": "aws.ec2",
+    "account": "903745515320",
+    "time": "2016-08-03T22:24:58Z",
+    "region": "us-east-1",
+    "resources": [],
+    "detail":
+{
+    "eventVersion": "1.04",
+    "userIdentity": {
+        "type": "AssumedRole",
+        "principalId": "AROAIY4H3BQN3SFO4TV2S:traverso-Isengard",
+        "arn": "arn:aws:sts::903745515320:assumed-role/IsengardAdministrator/traverso-Isengard",
+        "accountId": "903745515320",
+        "accessKeyId": "XXXXXXXXXXXXXX",
+        "sessionContext": {
+            "attributes": {
+                "mfaAuthenticated": "false",
+                "creationDate": "2016-08-15T21:30:27Z"
+            },
+            "sessionIssuer": {
+                "type": "Role",
+                "principalId": "AROAIY4H3BQN3SFO4TV2S",
+                "arn": "arn:aws:iam::903745515320:role/IsengardAdministrator",
+                "accountId": "903745515320",
+                "userName": "IsengardAdministrator"
+            }
+        }
+    },
+    "eventTime": "2016-08-15T21:33:34Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "RunInstances",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "72.21.196.68",
+    "userAgent": "console.ec2.amazonaws.com",
+    "requestParameters": {
+        "instancesSet": {
+            "items": [
+                {
+                    "imageId": "ami-74a73263",
+                    "minCount": 1,
+                    "maxCount": 1,
+                    "keyName": "labo-root"
+                }
+            ]
+        },
+        "groupSet": {
+            "items": [
+                {
+                    "groupId": "sg-a6e120c3"
+                }
+            ]
+        },
+        "instanceType": "t2.micro",
+        "blockDeviceMapping": {
+            "items": [
+                {
+                    "deviceName": "/dev/sda1",
+                    "ebs": {
+                        "volumeSize": 30,
+                        "deleteOnTermination": true,
+                        "volumeType": "gp2"
+                    }
+                },
+                {
+                    "deviceName": "xvdca",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcb",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcc",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcd",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdce",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcf",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcg",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdch",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdci",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcj",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdck",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcl",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcm",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcn",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdco",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcp",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcq",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcr",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcs",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdct",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcu",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcv",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcw",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcx",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcy",
+                    "noDevice": {}
+                },
+                {
+                    "deviceName": "xvdcz",
+                    "noDevice": {}
+                }
+            ]
+        },
+        "tenancy": "default",
+        "monitoring": {
+            "enabled": false
+        },
+        "disableApiTermination": false,
+        "instanceInitiatedShutdownBehavior": "stop",
+        "clientToken": "JAJLg1471296813846",
+        "iamInstanceProfile": {
+            "arn": "arn:aws:iam::903745515320:instance-profile/AWS_SSM_Full"
+        },
+        "ebsOptimized": false
+    },
+    "responseElements": {
+        "reservationId": "r-3df40f83",
+        "ownerId": "903745515320",
+        "groupSet": {},
+        "instancesSet": {
+            "items": [
+                {
+                    "instanceId": "i-79cd4bff",
+                    "imageId": "ami-74a73263",
+                    "instanceState": {
+                        "code": 0,
+                        "name": "pending"
+                    },
+                    "privateDnsName": "ip-172-31-33-158.ec2.internal",
+                    "keyName": "labo-root",
+                    "amiLaunchIndex": 0,
+                    "productCodes": {},
+                    "instanceType": "t2.micro",
+                    "launchTime": 1471296814000,
+                    "placement": {
+                        "availabilityZone": "us-east-1b",
+                        "tenancy": "default"
+                    },
+                    "platform": "windows",
+                    "monitoring": {
+                        "state": "disabled"
+                    },
+                    "subnetId": "subnet-2aaa5001",
+                    "vpcId": "vpc-a42bcbc1",
+                    "privateIpAddress": "172.31.33.158",
+                    "stateReason": {
+                        "code": "pending",
+                        "message": "pending"
+                    },
+                    "architecture": "x86_64",
+                    "rootDeviceType": "ebs",
+                    "rootDeviceName": "/dev/sda1",
+                    "blockDeviceMapping": {},
+                    "virtualizationType": "hvm",
+                    "hypervisor": "xen",
+                    "clientToken": "JAJLg1471296813846",
+                    "interfaceId": "interface-269d3536",
+                    "groupSet": {
+                        "items": [
+                            {
+                                "groupId": "sg-a6e120c3",
+                                "groupName": "default"
+                            }
+                        ]
+                    },
+                    "sourceDestCheck": true,
+                    "networkInterfaceSet": {
+                        "items": [
+                            {
+                                "networkInterfaceId": "eni-269d3536",
+                                "internalInterfaceId": "interface-269d3536",
+                                "subnetId": "subnet-2aaa5001",
+                                "vpcId": "vpc-a42bcbc1",
+                                "availabilityZone": "us-east-1b",
+                                "ownerId": "903745515320",
+                                "requesterManaged": false,
+                                "status": "in-use",
+                                "macAddress": "12:5c:a5:a9:48:19",
+                                "privateIpAddress": "172.31.33.158",
+                                "privateDnsName": "ip-172-31-33-158.ec2.internal",
+                                "sourceDestCheck": true,
+                                "groupSet": {
+                                    "items": [
+                                        {
+                                            "groupId": "sg-a6e120c3",
+                                            "groupName": "default"
+                                        }
+                                    ]
+                                },
+                                "attachment": {
+                                    "attachmentId": "eni-attach-98dffb31",
+                                    "instanceId": "i-3dddcaa3",
+                                    "instanceOwnerId": "903745515320",
+                                    "deviceIndex": 0,
+                                    "status": "attaching",
+                                    "attachTime": 1471296814000,
+                                    "deleteOnTermination": true
+                                },
+                                "attachableToInstanceBySet": {},
+                                "associableWithElasticIpBySet": {},
+                                "privateIpAddressesSet": {
+                                    "item": [
+                                        {
+                                            "privateIpAddress": "172.31.33.158",
+                                            "privateDnsName": "ip-172-31-33-158.ec2.internal",
+                                            "primary": true
+                                        }
+                                    ]
+                                },
+                                "tagSet": {}
+                            }
+                        ]
+                    },
+                    "iamInstanceProfile": {
+                        "arn": "arn:aws:iam::903745515320:instance-profile/AWS_SSM_Full",
+                        "id": "AIPAIZ2L7KJP3XZOZDZSQ"
+                    },
+                    "ebsOptimized": false
+                }
+            ]
+        }
+    },
+    "requestID": "00f53bb4-7d34-48e8-b0f6-61a09517c2ed",
+    "eventID": "55dade5f-d1f2-4970-ade5-2605cc3fe604",
+    "eventType": "AwsApiCall",
+    "recipientAccountId": "903745515320"
+}
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>AWS Kinesis Demo</title>   
+    <link rel="icon" type="image/ico" href="assets/images/favicon.ico" /> 
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <script src="assets/js/aws-sdk.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/heatmap.min.js"></script>
+    <script src="assets/js/functions.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+</head>
+
+<body>
+    <div class="jumbotron">
+      <div class="container-fluid">
+        <h1 class="center">Kinesis <em>Serverless</em> Application</h1>
+        <p>This is a sample application which will track <strong> every </strong> mouse movement, feed this information into a Kinesis stream, process it using a Lambda function and finally persist it in DynamoDB. The graph is automatically updated with the information stored in DynamoDB</p>
+          <div class="row">
+            <div class="col-xs-3 col-xs-offset-3">
+              <button type="button" class="btn btn-success btn-lg btn-block" onclick="startTracking()" id="buttonStart">Start tracking</button>
+            </div>
+            <div class="col-xs-3">
+              <button type="button" class="btn btn-danger btn-lg btn-block" onclick="stopTracking()" id="buttonStop" disabled>Stop tracking</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+    <!--0<div class="row" id="charts" style="display:none"> -->
+      <div class="col-md-3">
+        <h2>Position</h2>
+        <table class="table table-bordered">
+          <thead>
+            <tr class="active">
+              <th class="center">X</th>
+              <th class="center">Y</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-md-2" id="positionX">-</td>
+              <td class="col-md-2" id="positionY">-</td>
+            </tr>
+            <tr class="active">
+              <th colspan=2 class="center">Total events tracked</th>
+            </tr>
+            <tr>
+              <td colspan=2 class="col-md-2" id="eventsTracked">-</td>
+            </tr>
+            <tr class="active">
+              <th colspan=2 class="center">Current Time</th>
+            </tr>
+            <tr>
+              <td colspan=2 class="col-md-2" id="clock">-</td>
+            </tr>
+             <tr class="active">
+              <th colspan=2 class="center">Last Processed Event</th>
+            </tr>
+            <tr>
+              <td colspan=2 class="col-md-2" id="lastEvent">-</td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#modalHeatmap">Heatmap</button>
+        <button type="button" class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target="#modalAbout">Architecture</button>
+      </div>
+      <div class="col-md-9">
+        <h2>Movements Count</h2>
+        <div>
+        <canvas id="updating-chart" width="800" height="250" class="center-block"></canvas>
+      </div>
+        <div>
+        <img src='assets/images/banner.gif' id="banner" class="img-responsive center-block" style="display:none;"/>
+        <img src='assets/images/loading.gif' id="loading" class="img-responsive center-block" style="display:none;"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Heatmap -->
+  <div class="modal fade" id="modalHeatmap" role="dialog">
+    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Close</button>
+    <div class="heatmap">
+    </div>
+  </div>
+   <!-- <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Last 10 seconds heatmap</h4>
+        </div>
+        <div class="modal-body">
+          <div class="heatmap">
+          </div>
+        </div>
+    </div>
+  </div> -->
+  
+  <!-- Modal for Architecture Diagram -->
+  <div class="modal fade" id="modalAbout" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Architecture</h4>
+        </div>
+        <div class="modal-body">
+          <img src="assets/images/Demo_Kinesis_Architecture.jpg">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+  <span></span>
+</body>
+
+</html>
